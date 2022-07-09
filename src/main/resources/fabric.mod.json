@@ -28,11 +28,11 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.6",
-    "fabric": ">=0.53.0",
+    "fabric": ">=0.57.0",
     "iceberg": "*",
     "minecraft": [
-      "1.18.2"
+      "1.19"
     ],
-    "java": ">=16"
+    "java": ">=17"
   }
 }

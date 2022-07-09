@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -10,8 +10,10 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version + "-" + project.minecraft_version
 group = project.maven_group
 
+/*
 minecraft {
 }
+*/
 
 repositories {
     maven { url 'https://jitpack.io' }
@@ -41,7 +43,7 @@ dependencies {
     modImplementation "com.github.emilyploszaj:step-height-entity-attribute:v1.0.1"
     include "com.github.emilyploszaj:step-height-entity-attribute:v1.0.1"
 
-    modImplementation "curse.maven:iceberg-539382:3675784"
+    modImplementation "curse.maven:iceberg-539382:3832794"
 }
 
 processResources {
