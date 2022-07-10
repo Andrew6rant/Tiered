@@ -48,6 +48,7 @@ public class Tiered implements ModInitializer {
     public static final AttributeDataLoader ATTRIBUTE_DATA_LOADER = new AttributeDataLoader();
 
     public static final UUID[] MODIFIERS = new UUID[] {
+
             UUID.fromString("1234527C-C624-495F-8C9F-6020A9A58B6B"),
             UUID.fromString("12345B04-0E66-4726-AB29-64469D734E0D"),
             UUID.fromString("1234576D-C118-4544-8365-64846904B48E"),

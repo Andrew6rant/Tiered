@@ -6,7 +6,7 @@
     "InventoryAccessor",
     "LivingEntityMixin",
     "PlayerEntityMixin",
-    "ServerPlayerEntityMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
     "client.ItemEntityRendererMixin",
