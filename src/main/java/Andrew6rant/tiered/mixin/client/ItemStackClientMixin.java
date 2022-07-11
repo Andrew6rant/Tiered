@@ -15,7 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TextContent;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,9 +28,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static Andrew6rant.tiered.TieredClient.roundFloat;
 import static Andrew6rant.tiered.TieredClient.trailZeros;
@@ -55,15 +54,15 @@ public abstract class ItemStackClientMixin {
         isTiered = entityAttributeModifier.getName().contains("tiered:");
     }
 
-    @Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/TranslatableText;formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;", ordinal = 2))
-    private MutableText getFormatting(TranslatableText translatableText, Formatting formatting) {
+    @Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/MutableText;formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;", ordinal = 2))
+    private MutableText getFormatting(MutableText instance, Formatting formatting) {
         if (this.hasNbt() && this.getSubNbt(Tiered.NBT_SUBTAG_KEY) != null && isTiered) {
             Identifier tier = new Identifier(this.getOrCreateSubNbt(Tiered.NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
             PotentialAttribute attribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
 
-            return translatableText.setStyle(attribute.getStyle());
+            return instance.setStyle(attribute.getStyle());
         } else {
-            return translatableText.formatted(formatting);
+            return instance.formatted(formatting);
         }
     }
 
@@ -94,64 +93,90 @@ public abstract class ItemStackClientMixin {
             PotentialAttribute potentialAttribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
 
             if (potentialAttribute != null)
-                info.setReturnValue(new TranslatableText(potentialAttribute.getID() + ".label").append(" ").append(info.getReturnValue()).setStyle(potentialAttribute.getStyle()));
+                info.setReturnValue(Text.translatable(potentialAttribute.getID() + ".label").append(" ").append(info.getReturnValue()).setStyle(potentialAttribute.getStyle()));
         }
     }
+
     @Inject(
             method = "getTooltip",
             at = @At(value = "RETURN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void test(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         if (isTiered && this.hasNbt() && this.getSubNbt(Tiered.NBT_SUBTAG_KEY) != null) { // only run on tiered items
             List<Text> list = cir.getReturnValue();
+            //for (Text text : list) {
+            //    System.out.println(text);
+            //}
+            //System.out.println("--------------");
             List<Text> badlyFormattedList = new ArrayList<>();
-            List<TranslatableText> modifierList = new ArrayList<>();
+            List<MutableText> modifierList = new ArrayList<>();
             Set<String> set = new HashSet<>();
-            Set<TranslatableText> noDuplicates = new HashSet<>();
-            list.removeIf(text -> (!(text instanceof TranslatableText) && text.getSiblings().size() == 0)); // remove blank tooltip lines
+            Set<MutableText> noDuplicates = new HashSet<>();
+            list.removeIf(text -> (!(text.getContent() instanceof TranslatableTextContent) && text.getSiblings().size() == 0)); // remove blank tooltip lines
             for (Text textComponent : list) {
-                if (!(textComponent instanceof TranslatableText)) {
+                if (!(textComponent.getContent() instanceof TranslatableTextContent)) {
                     badlyFormattedList.add(textComponent);
                 }
             }
+            //System.out.println("--------------"+badlyFormattedList.get(0));
             badlyFormattedList.remove(0); // preserve the name of the item
-            for (Text text : badlyFormattedList) {
+
+            for (Text badtext : badlyFormattedList) {
                 // reformat badly formatted tooltip lines into TranslatableTexts, as the first two lines
                 // of most held weapons are blank TextComponents with sibling TranslatableComponents
-                TranslatableText translatableText = (TranslatableText) text.getSiblings().get(0);
-                TranslatableText newText = (TranslatableText) translatableText.getArgs()[1];
-                list.add(2, new TranslatableText(translatableText.getKey(), trailZeros(Float.parseFloat(String.valueOf(translatableText.getArgs()[0]))), new TranslatableText(newText.getKey())).formatted(Formatting.DARK_GREEN));
+                //System.out.println("BADLY_FORMATTED: "+badtext);
+                //System.out.println("siblings: "+badtext.getSiblings().get(0));
+                TextContent textContent = badtext.getSiblings().get(0).getContent();
+                //System.out.println("content: "+textContent);
+                list.add(2, MutableText.of(textContent));
+                //list.add(MutableText(badtext.getSiblings().get(0).getKey()));
+                //MutableText mutableText = (MutableText) badtext.getSiblings().get(0);
+                //MutableText newText = mutableText
+                //TranslatableTextContent translatableText = (TranslatableTextContent) badtext.getSiblings().get(0);
+                //TranslatableTextContent newText = (TranslatableTextContent) translatableText.getArgs()[1];
+                //list.add(2, Text.translatable(translatableText.getKey(), trailZeros(Float.parseFloat(String.valueOf(translatableText.getArgs()[0]))), Text.translatable(newText.getKey())).formatted(Formatting.DARK_GREEN));
             }
             list.removeAll(badlyFormattedList); // remove badly formatted lines
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i) instanceof TranslatableText translatableText) {
-                    if (translatableText.getKey().startsWith("item.modifiers")) {
-                        modifierList.add(translatableText);
+                var translatableText = list.get(i);
+                if (translatableText instanceof MutableText mutableText && translatableText.getContent() instanceof TranslatableTextContent translatableTextContent) {
+
+                    if (translatableTextContent.getKey().startsWith("item.modifiers")) {
+                        modifierList.add(mutableText);
                     }
                     if (modifierList.size() > 1) {
                         list.subList(i, list.size()).clear();
                     }
                 }
             }
+            //for (Text text : list) {
+            //    System.out.println("AFTER: "+text);
+            //}
+            //System.out.println("AFTER--------------");
+            //System.out.println("AFTER3--------");
             if (modifierList.size() > 1) {
                 list.removeAll(modifierList);
                 Object[] args = new Object[modifierList.size()];
                 for (int i = 0; i < modifierList.size(); i++) {
-                    args[i] = new TranslatableText("tooltip.tiered." +modifierList.get(i).getKey());
+                    args[i] = Text.translatable("tooltip.tiered." + ((TranslatableTextContent) modifierList.get(i).getContent()).getKey());
                 }
-                list.add(1, new TranslatableText("tooltip.tiered.modifier."+modifierList.size(), args).formatted(Formatting.GRAY));
+                list.add(1, Text.translatable("tooltip.tiered.modifier."+modifierList.size(), args).formatted(Formatting.GRAY));
             }
-
             for (Text text : list) {
-                if (text instanceof TranslatableText listText && listText.getKey().startsWith("attribute.modifier")) {
+                if (text instanceof MutableText mutableText
+                        && mutableText.getContent() instanceof TranslatableTextContent listText
+                        && listText.getKey().startsWith("attribute.modifier")) {
                     Object[] args = listText.getArgs();
-                    TranslatableText argText = (TranslatableText) args[1];
+                    TranslatableTextContent argText = (TranslatableTextContent) ((MutableText)args[1]).getContent();
                     if (!set.add(argText.getKey())) { // if there is more than one modifier with the same key
-                        for (Text textCompare : list) {
-                            if (textCompare instanceof TranslatableText listTextCompare && listTextCompare.getKey().startsWith("attribute.modifier")) {
-                                Object[] args2 = listTextCompare.getArgs(); TranslatableText argText2 = (TranslatableText) args2[1];
+                        for (Text mutableTextCompare : list) {
+                            if (mutableTextCompare instanceof MutableText textCompare
+                                    && textCompare.getContent() instanceof TranslatableTextContent listTextCompare
+                                    && listTextCompare.getKey().startsWith("attribute.modifier")) {
+                                Object[] args2 = listTextCompare.getArgs();
+                                TranslatableTextContent argText2 = (TranslatableTextContent) ((MutableText)args2[1]).getContent();;
                                 if(argText.getKey().equals(argText2.getKey())) {
-                                    noDuplicates.add(listText);
-                                    noDuplicates.add(listTextCompare);
+                                    noDuplicates.add(mutableText);
+                                    noDuplicates.add(textCompare);
                                 }
                             }
                         }
@@ -159,30 +184,37 @@ public abstract class ItemStackClientMixin {
 
                 }
             }
+            MutableText[] noDuplicatesArray = new MutableText[noDuplicates.size()];
+            noDuplicatesArray = noDuplicates.toArray(noDuplicatesArray);
             for (int i = 0; i < noDuplicates.size(); i ++) {
-                for (int j = i+1; j < noDuplicates.size(); j ++) {
-                    TranslatableText text = (TranslatableText) noDuplicates.toArray()[i];
-                    TranslatableText text_compare = (TranslatableText) noDuplicates.toArray()[j];
-                    TranslatableText key = (TranslatableText) text.getArgs()[1];
-                    TranslatableText key_compare = (TranslatableText) text_compare.getArgs()[1];
-                    float val1 = Float.parseFloat(String.valueOf(text.getArgs()[0]));
-                    float val2 = Float.parseFloat(String.valueOf(text_compare.getArgs()[0]));
-                    String val1Str = trailZeros(val1);
-                    String val2Str = trailZeros(val2);
-                    if (key.getKey().equals(key_compare.getKey())) {
-                        Identifier tier = new Identifier(this.getOrCreateSubNbt(Tiered.NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
-                        PotentialAttribute attribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
-                        list.remove(noDuplicates.toArray()[i]);
-                        list.remove(noDuplicates.toArray()[j]);
-                        switch (text.getKey() + text_compare.getKey()) {
-                            // I will turn this into a proper lookup table later lol
-                            case "attribute.modifier.plus.0attribute.modifier.plus.0" -> list.add(2, new TranslatableText("tooltip.tiered.add", trailZeros(roundFloat(val1 + val2)), key, val1Str, val2Str).setStyle(attribute.getStyle()));
-                            case "attribute.modifier.plus.1attribute.modifier.equals.0", "attribute.modifier.plus.2attribute.modifier.equals.0", "attribute.modifier.plus.1attribute.modifier.plus.0", "attribute.modifier.plus.2attribute.modifier.plus.0" -> list.add(2, new TranslatableText("tooltip.tiered.multiply", trailZeros(roundFloat((val2 * (val1 / 100.0f)) + val2)), key, val2Str, val1Str).setStyle(attribute.getStyle()));
-                            case "attribute.modifier.take.0attribute.modifier.plus.0" -> list.add(2, new TranslatableText("tooltip.tiered.subtract", trailZeros(roundFloat(val2 - val1)), key, val2Str, val1Str).formatted(Formatting.RED));
-                            case "attribute.modifier.take.1attribute.modifier.equals.0", "attribute.modifier.take.2attribute.modifier.equals.0" -> list.add(2, new TranslatableText("tooltip.tiered.divide", trailZeros(roundFloat(val2 - (val2 * (val1 / 100.0f)))), key, val2Str, val1Str).formatted(Formatting.RED));
-                            case "attribute.modifier.equals.0attribute.modifier.plus.1", "attribute.modifier.equals.0attribute.modifier.plus.2" -> list.add(2, new TranslatableText("tooltip.tiered.multiply", trailZeros(roundFloat((val1 * (val2 / 100.0f)) + val1)), key, val1Str, val2Str).setStyle(attribute.getStyle()));
-                            case "attribute.modifier.equals.0attribute.modifier.take.1", "attribute.modifier.equals.0attribute.modifier.take.2" -> list.add(2, new TranslatableText("tooltip.tiered.divide", trailZeros(roundFloat(val1 - (val1 * (val2 / 100.0f)))), key, val1Str, val2Str).formatted(Formatting.RED));
-                            default -> System.out.println("The combination of "+text.getKey()+" and "+text_compare.getKey()+" is not supported yet. Please make an issue on GitHub: https://github.com/Andrew6rant/tiered");
+                for (int j = i + 1; j < noDuplicates.size(); j ++) {
+                    TranslatableTextContent text = (TranslatableTextContent) noDuplicatesArray[i].getContent();
+                    TranslatableTextContent text_compare = (TranslatableTextContent) noDuplicatesArray[j].getContent();
+                    if (text.getArgs()[1] instanceof MutableText) {
+                        var keyText = (MutableText)text.getArgs()[1];
+                        TranslatableTextContent key = (TranslatableTextContent) keyText.getContent();
+                        if(text_compare.getArgs()[1] instanceof MutableText) {
+                            TranslatableTextContent key_compare = (TranslatableTextContent) ((MutableText)text_compare.getArgs()[1]).getContent();
+                            float val1 = Float.parseFloat(String.valueOf(text.getArgs()[0]));
+                            float val2 = Float.parseFloat(String.valueOf(text_compare.getArgs()[0]));
+                            String val1Str = trailZeros(val1);
+                            String val2Str = trailZeros(val2);
+                            if (key.getKey().equals(key_compare.getKey())) {
+                                Identifier tier = new Identifier(this.getOrCreateSubNbt(Tiered.NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
+                                PotentialAttribute attribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
+                                list.remove(noDuplicatesArray[i]);
+                                list.remove(noDuplicatesArray[j]);
+                                switch (text.getKey() + text_compare.getKey()) {
+                                    // I will turn this into a proper lookup table later lol
+                                    case "attribute.modifier.plus.0attribute.modifier.plus.0" -> list.add(2, Text.translatable("tooltip.tiered.add", trailZeros(roundFloat(val1 + val2)), keyText, val1Str, val2Str).setStyle(attribute.getStyle()));
+                                    case "attribute.modifier.plus.1attribute.modifier.equals.0", "attribute.modifier.plus.2attribute.modifier.equals.0", "attribute.modifier.plus.1attribute.modifier.plus.0", "attribute.modifier.plus.2attribute.modifier.plus.0" -> list.add(2, Text.translatable("tooltip.tiered.multiply", trailZeros(roundFloat((val2 * (val1 / 100.0f)) + val2)), keyText, val2Str, val1Str).setStyle(attribute.getStyle()));
+                                    case "attribute.modifier.take.0attribute.modifier.plus.0" -> list.add(2, Text.translatable("tooltip.tiered.subtract", trailZeros(roundFloat(val2 - val1)), keyText, val2Str, val1Str).formatted(Formatting.RED));
+                                    case "attribute.modifier.take.1attribute.modifier.equals.0", "attribute.modifier.take.2attribute.modifier.equals.0" -> list.add(2, Text.translatable("tooltip.tiered.divide", trailZeros(roundFloat(val2 - (val2 * (val1 / 100.0f)))), keyText, val2Str, val1Str).formatted(Formatting.RED));
+                                    case "attribute.modifier.equals.0attribute.modifier.plus.1", "attribute.modifier.equals.0attribute.modifier.plus.2" -> list.add(2, Text.translatable("tooltip.tiered.multiply", trailZeros(roundFloat((val1 * (val2 / 100.0f)) + val1)), keyText, val1Str, val2Str).setStyle(attribute.getStyle()));
+                                    case "attribute.modifier.equals.0attribute.modifier.take.1", "attribute.modifier.equals.0attribute.modifier.take.2" -> list.add(2, Text.translatable("tooltip.tiered.divide", trailZeros(roundFloat(val1 - (val1 * (val2 / 100.0f)))), keyText, val1Str, val2Str).formatted(Formatting.RED));
+                                    default -> System.out.println("The combination of "+text.getKey()+" and "+text_compare.getKey()+" is not supported yet. Please make an issue on GitHub: https://github.com/Andrew6rant/tiered");
+                                }
+                            }
                         }
                     }
                 }

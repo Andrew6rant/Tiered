@@ -5,11 +5,13 @@ import Andrew6rant.tiered.Tiered;
 import Andrew6rant.tiered.api.ModifierUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,8 +23,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     private DefaultedList<ItemStack> mainCopy = null;
 
-    private ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-        super(world, pos, yaw, profile);
+    private ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile,@Nullable PlayerPublicKey publicKey) {
+        super(world, pos, yaw, profile, publicKey);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))

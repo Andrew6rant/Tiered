@@ -14,7 +14,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -60,7 +60,7 @@ public class ReforgingStation extends BarrelBlock implements BlockEntityProvider
                 shape = VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(0, 1, 0.0625, 1, 1.25, 0.9375), BooleanBiFunction.OR);
                 return shape;
             }
-        };
+        }
         return null;
     }
     @Override
@@ -76,7 +76,7 @@ public class ReforgingStation extends BarrelBlock implements BlockEntityProvider
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         BarrelBlockEntity reforgingStationBlockEntity = new BarrelBlockEntity(pos, state);
-        reforgingStationBlockEntity.setCustomName(new TranslatableText("container.reforging_station"));
+        reforgingStationBlockEntity.setCustomName(Text.translatable("container.reforging_station"));
         return reforgingStationBlockEntity;
     }
 
@@ -124,7 +124,7 @@ public class ReforgingStation extends BarrelBlock implements BlockEntityProvider
                 if (!player.isCreative() && (player.experienceLevel == 0 && (MathHelper.floor(player.experienceProgress * (float)player.getNextLevelExperience())) < Tiered.getter(stack, "reforgeCost"))) {
                     // super strange that Mojang made a nice method for finding xp levels but not points
                     player.playSound(SoundEvents.BLOCK_WOOD_HIT, 1, 1);
-                    player.sendMessage(new TranslatableText("message.tiered.no_xp"), true);
+                    player.sendMessage(Text.translatable("message.tiered.no_xp"), true);
                 } else {
                     if (!player.isCreative()) {
                         player.addExperience(-Tiered.getter(stack, "reforgeCost")); // this is the negative of reforge_cost
