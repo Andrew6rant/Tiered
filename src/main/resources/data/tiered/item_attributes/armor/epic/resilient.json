@@ -10,9 +10,8 @@
     "color": "light_purple"
   },
   "weight": 2,
-  "tooltip_image": 4,
-  "tooltip_border_start":  4288244002,
-  "tooltip_border_end":  4288244002,
+  "tooltip_image": [0, 1, 2, 3, 4, 500],
+  "tooltip_border":  ["FF996922"],
   "reforge_cost": 21,
   "attributes": [
     {

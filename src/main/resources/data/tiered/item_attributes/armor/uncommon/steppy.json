@@ -8,9 +8,8 @@
     "color": "green"
   },
   "weight": 5,
-  "tooltip_image": 2,
-  "tooltip_border_start":  4283826005,
-  "tooltip_border_end":  4279880217,
+  "tooltip_image": [0, 1, 2, 3, 300],
+  "tooltip_border":  ["FF55FF55"],
   "reforge_cost": 8,
   "attributes": [
     {

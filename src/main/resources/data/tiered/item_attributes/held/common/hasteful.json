@@ -10,20 +10,20 @@
     "color": "white"
   },
   "weight": 8,
-  "tooltip_image": 10,
-  "tooltip_border_start":  4294967295,
-  "tooltip_border_end":  4294967295,
+  "tooltip_image": [10],
+  "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
       "type": "tiered:generic.dig_speed",
       "modifier": {
         "name": "tiered:hasteful",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.10
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     }
   ]

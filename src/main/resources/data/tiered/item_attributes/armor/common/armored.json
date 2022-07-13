@@ -12,9 +12,8 @@
     "color": "white"
   },
   "weight": 8,
-  "tooltip_image": 1,
-  "tooltip_border_start":  4294967295,
-  "tooltip_border_end":  4294967295,
+  "tooltip_image": [0, 1, 2, 3, 4, 500],
+  "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
@@ -22,7 +21,7 @@
       "modifier": {
         "name": "tiered:armored",
         "operation": "ADDITION",
-        "amount": 1
+        "amount": 0.5
       },
       "optional_equipment_slots": [
         "FEET",

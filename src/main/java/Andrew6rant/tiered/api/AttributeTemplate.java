@@ -58,6 +58,10 @@ public class AttributeTemplate {
         return optionalEquipmentSlots;
     }
 
+    public String getAttributeTypeID() {
+        return attributeTypeID;
+    }
+
     /*public String getSize() {
         return size;
     }*/

@@ -11,20 +11,20 @@
     "color": "aqua"
   },
   "weight": 3,
-  "tooltip_image": 3,
-  "tooltip_border_start":  4286578687,
-  "tooltip_border_end":  4286578687,
+  "tooltip_image": [3],
+  "tooltip_border":  ["FF7FFFFF"],
   "reforge_cost": 13,
   "attributes": [
     {
       "type": "generic.attack_speed",
       "modifier": {
         "name": "tiered:gargantuan",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": -0.75
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     },
     {
@@ -35,7 +35,8 @@
         "amount": 3
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     },
     {
@@ -46,18 +47,20 @@
         "amount": 3
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     },
     {
       "type": "tiered:generic.size",
       "modifier": {
         "name": "tiered:gargantuan",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 1.5
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     }
   ]

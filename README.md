@@ -21,33 +21,34 @@ Tiered is almost entirely data-driven, which means you can add, modify, and remo
   "verifiers": [
     { "tag": "c:pickaxes" },
     { "tag": "c:shovels" },
-    { "tag": "c:axes" }
+    { "tag": "c:axes" },
+    { "tag": "c:hoes" }
   ],
   "style": {
-    "color": "green"
+    "color": "white"
   },
-  "weight": 5,
-  "tooltip_image": 2,
-  "tooltip_border_start":  4283826005,
-  "tooltip_border_end":  4279880217,
-  "reforge_cost": 8,
+  "weight": 8,
+  "tooltip_image": [10],
+  "tooltip_border":  ["FFFFFFFF"],
+  "reforge_cost": 5,
   "attributes": [
     {
-      "type": "generic.dig_speed",
+      "type": "tiered:generic.dig_speed",
       "modifier": {
         "name": "tiered:hasteful",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.10
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     }
   ]
 }
 ```
 
-Tiered currently provides 3 custom attributes: Dig Speed, Crit Chance, and Size. Dig Speed increases the speed of your block breaking (think: haste), Crit Chance offers an additional random chance to crit when using a tool, and Size changes the held and dropped item rendering.
+Tiered currently provides 7 custom attributes: Attack Range, Crit Chance, Dig Speed, Projectile Damage, Reach, Size, and Step Height. Dig Speed increases the speed of your block breaking (think: haste), Crit Chance offers an additional random chance to crit when using a tool, and Size changes the held and dropped item rendering.
 
 ### Verifiers
 
@@ -81,7 +82,7 @@ Tiered provides five customization options regarding tooltips.
 
 - `color` changes the text color
 - `tooltip_image` specifies the border style (see below)
-- `tooltip_border_start` and `tooltip_border_end` determine the top and bottom line colors of the border, respectively.
+- `tooltip_border` determines the line colors of the border. It is an array of 0xAARRGGBB hexadecimal formatted strings. Use one value to color the entire border, or two to specify the start and end colors.
 - `no_tooltip` can be used in the `name` section of an attribute to prevent it from showing. For example, this can be useful for the `reach` and `attack_range` modifier types, as they are often used together and can clutter a tooltip.
 
 Here is the formatting for the border style. This image allows for up to 16 styles (0-15):
@@ -92,12 +93,11 @@ And here is how it looks in-game:
 
 ![debug_inventory](https://user-images.githubusercontent.com/57331134/145140685-ce11ff58-b277-4029-b588-83f0db4b237d.png)
 
-In that image, the tooltip_border_start and tooltip_border_end colors are 4280615006 and 4279762996 (#25005e, #180034), for purple at the top and dark purple at the bottom. These are the same values Vanilla Minecraft uses. The format is 0xAARRGGBB converted to decimal (0xff25005e to decimal is 4280615006).
-
 You can use any sized image (with a power of 2 resolution (128x, 256x, 512x, etc, like Vanilla Minecraft) to make as many borders as you like. Here is an example with 64 styles:
 
 ![debug-big](https://user-images.githubusercontent.com/57331134/145140359-26c8014a-dcfc-4fbf-8364-41e7235bcbd9.png)
 
+The border image is stored in an array, to allow for animated borders. Use one value to have a static border, or multiple to animate it (in the frame order specified, with the last index being the framerate in milliseconds).
 
 ### License
 Tiered is licensed under MIT. You are free to use the code inside this repo as you want.

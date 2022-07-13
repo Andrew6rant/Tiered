@@ -1,0 +1,103 @@
+{
+  "block.tiered.reforging_station": "Estación de Reforjado",
+  "container.reforging_station": "Estación de Reforjado",
+
+  "generic.dig_speed": "Vel. Excavado",
+  "generic.crit_chance": "Crit. Chance",
+  "generic.size": "Tamaño",
+
+  "message.tiered.no_xp": "No tienes suficiente EXP!",
+
+  "tooltip.tiered.add": " %1$s %2$s (%3$s + %4$s)",
+  "tooltip.tiered.subtract": " %1$s %2$s (%3$s - %4$s)",
+  "tooltip.tiered.multiply_base": " %1$s %2$s (%3$s + %4$s%%)",
+  "tooltip.tiered.multiply_total": " %1$s %2$s (Total * %4$s%%)",
+  "tooltip.tiered.divide_base": " %1$s %2$s (%3$s - %4$s%%)",
+  "tooltip.tiered.divide_total": " %1$s %2$s (Total * %4$s%%)",
+
+  "attribute.modifier.plus.2": "+%s%% Total %s",
+  "attribute.modifier.take.2": "-%s%% Total %s",
+
+  "tooltip.tiered.modifier.2": "Equipado en %1$s o %2$s:",
+  "tooltip.tiered.modifier.3": "Equipado en %1$s, %2$s, o %3$s:",
+  "tooltip.tiered.modifier.4": "Equipado en %1$s, %2$s, %3$s, o %4$s:",
+  "tooltip.tiered.modifier.5": "Equipado en %1$s, %2$s, %3$s, %4$s, o %5$s:",
+  "tooltip.tiered.modifier.6": "Equipado en %1$s, %2$s, %3$s, %4$s, %5$s, o %6$s:",
+
+  "tooltip.tiered.item.modifiers.mainhand": "Mano Principal",
+  "tooltip.tiered.item.modifiers.offhand": "Mano Torpe",
+  "tooltip.tiered.item.modifiers.feet": "Pies",
+  "tooltip.tiered.item.modifiers.legs": "Piernas",
+  "tooltip.tiered.item.modifiers.chest": "Torso",
+  "tooltip.tiered.item.modifiers.head": "Cabeza",
+
+  "tooltip.tiered.error": "Error: El atributo \"%s\" no se puede mostrar!",
+
+  "//": "--- Held Item Modifiers ---",
+
+    "///": "Chatarra",
+      "tiered:blighted.label": "Blighted",
+      "tiered:blunted.label": "Blunted",
+      "tiered:cursed.label": "Maldita",
+      "tiered:dull.label": "Roma",
+      "tiered:slow.label": "Lenta",
+      "tiered:sluggish.label": "Torpe",
+      "tiered:unlucky.label": "Desafortunado",
+
+    "///": "Común",
+      "tiered:critical.label": "Critical",
+      "tiered:hasteful.label": "Hasteful",
+      "tiered:keen.label": "Keen",
+      "tiered:lucky.label": "Afortunado",
+      "tiered:pointed.label": "Pointed",
+      "tiered:quick.label": "Rápida",
+      "tiered:sharp.label": "Afilada",
+
+    "///": "Poco Común",
+      "tiered:blessed.label": "Bendecido",
+      "tiered:extended.label": "Extendido",
+      "tiered:large.label": "Grande",
+      "tiered:massive.label": "Masiva",
+      "tiered:small.label": "Pequeña",
+      "tiered:swift.label": "Ágil",
+      "tiered:tiny.label": "Mini",
+
+    "///": "Raro",
+      "tiered:brutal.label": "Brutal",
+      "tiered:gargantuan.label": "Gigantesca",
+      "tiered:hallowed.label": "Hallowed",
+      "tiered:nimble.label": "Nimble",
+
+    "///": "Épico",
+      "tiered:breakneck.label": "Rompecuellos",
+      "tiered:daring.label": "Cazaproblemas",
+      "tiered:sacred.label": "Sagrada",
+
+    "///": "Legendario",
+      "tiered:exalted.label": "Exaltada",
+
+  "//": "--- Armor Modifiers ---",
+
+    "///": "Chatarra",
+      "tiered:dented.label": "Dentada",
+      "tiered:leaded.label": "Leaded",
+
+    "///": "Común",
+      "tiered:armored.label": "Tachonada",
+      "tiered:brisk.label": "Brisk",
+      "tiered:fleeting.label": "Fleeting",
+      "tiered:heavy.label": "Pesada",
+
+    "///": "Poco Común",
+      "tiered:reinforced.label": "Reforzada",
+      "tiered:steppy.label": "Steppy",
+
+    "///": "Raro",
+      "tiered:fortified.label": "Fortificada",
+      "tiered:unchained.label": "Desencadenada",
+
+    "///": "Épico",
+      "tiered:resilient.label": "Resilente",
+
+    "///": "Legendario"
+}

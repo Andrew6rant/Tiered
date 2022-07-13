@@ -15,9 +15,9 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static Andrew6rant.tiered.Tiered.NBT_SUBTAG_KEY;
 
 public class TieredClient implements ClientModInitializer {
 
@@ -71,8 +71,10 @@ public class TieredClient implements ClientModInitializer {
     }
 
     public static void onPostTooltipEvent(ItemStack stack, List<TooltipComponent> components, MatrixStack matrixStack, int x, int y, TextRenderer font, int width, int height, boolean comparison) {
-        if(stack.getSubNbt(Tiered.NBT_SUBTAG_KEY) != null) {
-            Tooltip.drawBorder(matrixStack, x, y, width, height, Tiered.getter(stack, "level"), Tiered.getter(stack, "startColor"), Tiered.getter(stack, "endColor")); // just testing for now
+        if(stack.getSubNbt(NBT_SUBTAG_KEY) != null) {
+            Identifier tier = new Identifier(stack.getOrCreateSubNbt(NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
+            PotentialAttribute potentialAttribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
+            Tooltip.drawBorder(matrixStack, x, y, width, height, potentialAttribute.getTooltip_image(), potentialAttribute.getTooltip_border(0), potentialAttribute.getTooltip_border(1));
         }
     }
 }

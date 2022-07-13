@@ -1,26 +1,22 @@
 {
-  "id": "tiered:sharp",
+  "id": "tiered:pointed",
   "verifiers": [
-    { "tag": "c:swords" },
-    { "tag": "c:axes" },
-    { "tag": "c:pickaxes" },
-    { "tag": "c:shovels" },
-    { "tag": "c:hoes" }
+    { "tag": "c:bows" }
   ],
   "style": {
     "color": "white"
   },
-  "weight": 6,
-  "tooltip_image": [10],
+  "weight": 8,
+  "tooltip_image": [1],
   "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
-      "type": "generic.attack_damage",
+      "type": "generic.projectile_damage",
       "modifier": {
-        "name": "tiered:sharp",
+        "name": "tiered:pointed",
         "operation": "MULTIPLY_BASE",
-        "amount": 0.15
+        "amount": 0.20
       },
       "optional_equipment_slots": [
         "MAINHAND",

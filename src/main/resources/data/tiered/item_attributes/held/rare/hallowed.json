@@ -7,16 +7,15 @@
     "color": "aqua"
   },
   "weight": 3,
-  "tooltip_image": 3,
-  "tooltip_border_start":  4286578687,
-  "tooltip_border_end":  4286578687,
+  "tooltip_image": [3],
+  "tooltip_border":  ["FF7FFFFF"],
   "reforge_cost": 13,
   "attributes": [
     {
       "type": "generic.luck",
       "modifier": {
         "name": "tiered:hallowed",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.15
       },
       "optional_equipment_slots": [

@@ -10,8 +10,13 @@
 
   "tooltip.tiered.add": " %1$s %2$s (%3$s + %4$s)",
   "tooltip.tiered.subtract": " %1$s %2$s (%3$s - %4$s)",
-  "tooltip.tiered.multiply": " %1$s %2$s (%3$s + %4$s%%)",
-  "tooltip.tiered.divide": " %1$s %2$s (%3$s - %4$s%%)",
+  "tooltip.tiered.multiply_base": " %1$s %2$s (%3$s + %4$s%%)",
+  "tooltip.tiered.multiply_total": " %1$s %2$s (Total * %4$s%%)",
+  "tooltip.tiered.divide_base": " %1$s %2$s (%3$s - %4$s%%)",
+  "tooltip.tiered.divide_total": " %1$s %2$s (Total * %4$s%%)",
+
+  "attribute.modifier.plus.2": "+%s%% Total %s",
+  "attribute.modifier.take.2": "-%s%% Total %s",
 
   "tooltip.tiered.modifier.2": "When in %1$s or %2$s:",
   "tooltip.tiered.modifier.3": "When in %1$s, %2$s, or %3$s:",
@@ -26,10 +31,13 @@
   "tooltip.tiered.item.modifiers.chest": "Body",
   "tooltip.tiered.item.modifiers.head": "Head",
 
+  "tooltip.tiered.error": "Error: The attribute \"%s\" cannot be displayed!",
+
   "//": "--- Held Item Modifiers ---",
 
     "///": "Junk",
       "tiered:blighted.label": "Blighted",
+      "tiered:blunted.label": "Blunted",
       "tiered:cursed.label": "Cursed",
       "tiered:dull.label": "Dull",
       "tiered:slow.label": "Slow",
@@ -41,6 +49,7 @@
       "tiered:hasteful.label": "Hasteful",
       "tiered:keen.label": "Keen",
       "tiered:lucky.label": "Lucky",
+      "tiered:pointed.label": "Pointed",
       "tiered:quick.label": "Quick",
       "tiered:sharp.label": "Sharp",
 

@@ -7,16 +7,15 @@
     "color": "white"
   },
   "weight": 8,
-  "tooltip_image": 9,
-  "tooltip_border_start":  4294967295,
-  "tooltip_border_end":  4294967295,
+  "tooltip_image": [9],
+  "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
       "type": "generic.luck",
       "modifier": {
         "name": "tiered:lucky",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.05
       },
       "optional_equipment_slots": [

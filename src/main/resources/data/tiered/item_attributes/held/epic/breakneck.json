@@ -11,20 +11,20 @@
     "color": "light_purple"
   },
   "weight": 2,
-  "tooltip_image": 4,
-  "tooltip_border_start":  4288244002,
-  "tooltip_border_end":  4288244002,
+  "tooltip_image": [4],
+  "tooltip_border":  ["FF996922"],
   "reforge_cost": 21,
   "attributes": [
     {
       "type": "generic.attack_speed",
       "modifier": {
         "name": "tiered:breakneck",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.25
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     },
     {
@@ -35,7 +35,8 @@
         "amount": 2
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     },
     {
@@ -46,7 +47,8 @@
         "amount": 2
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     }
   ]

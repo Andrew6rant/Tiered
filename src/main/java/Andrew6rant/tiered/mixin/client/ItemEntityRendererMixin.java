@@ -45,7 +45,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
                         if (modifier.getOperation() == EntityAttributeModifier.Operation.ADDITION) {
                             scale.updateAndGet(v -> v + value);
                         } else {
-                            scale.updateAndGet(v -> v * (value + 1));
+                            scale.updateAndGet(v -> v * (value * 0.65f + 1.05f));
                         }
                     }
                 }));

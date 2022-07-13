@@ -7,9 +7,8 @@
     "color": "gold"
   },
   "weight": 1,
-  "tooltip_image": 7,
-  "tooltip_border_start":  0,
-  "tooltip_border_end":  0,
+  "tooltip_image": [6, 7, 8, 9, 10, 11, 150],
+  "tooltip_border":  ["FFFFBB00"],
   "reforge_cost": 30,
   "attributes": [
     {

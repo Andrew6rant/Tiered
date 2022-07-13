@@ -10,16 +10,15 @@
     "color": "white"
   },
   "weight": 6,
-  "tooltip_image": 1,
-  "tooltip_border_start":  4294967295,
-  "tooltip_border_end":  4294967295,
+  "tooltip_image": [0, 1, 2, 3, 4, 500],
+  "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
       "type": "generic.movement_speed",
       "modifier": {
         "name": "tiered:fleeting",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.10
       },
       "optional_equipment_slots": [

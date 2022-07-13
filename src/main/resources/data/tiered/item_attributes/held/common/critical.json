@@ -8,16 +8,15 @@
     "color": "white"
   },
   "weight": 8,
-  "tooltip_image": 1,
-  "tooltip_border_start":  4294967295,
-  "tooltip_border_end":  4294967295,
+  "tooltip_image": [1],
+  "tooltip_border":  ["FFFFFFFF"],
   "reforge_cost": 5,
   "attributes": [
     {
       "type": "generic.attack_damage",
       "modifier": {
         "name": "tiered:critical",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": -0.15
       },
       "optional_equipment_slots": [
@@ -28,11 +27,12 @@
       "type": "tiered:generic.crit_chance",
       "modifier": {
         "name": "tiered:critical",
-        "operation": "MULTIPLY_TOTAL",
+        "operation": "MULTIPLY_BASE",
         "amount": 0.25
       },
       "optional_equipment_slots": [
-        "MAINHAND"
+        "MAINHAND",
+        "OFFHAND"
       ]
     }
   ]

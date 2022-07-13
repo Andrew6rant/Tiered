@@ -92,21 +92,20 @@ public abstract class ItemStackClientMixin {
             // attempt to display attribute if it is valid
             PotentialAttribute potentialAttribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
 
-            if (potentialAttribute != null)
-                info.setReturnValue(Text.translatable(potentialAttribute.getID() + ".label").append(" ").append(info.getReturnValue()).setStyle(potentialAttribute.getStyle()));
+            if (potentialAttribute != null) {
+                if(!potentialAttribute.getAttributes().get(0).getAttributeTypeID().equals("none")) {
+                    info.setReturnValue(Text.translatable(potentialAttribute.getID() + ".label").append(" ").append(info.getReturnValue()).setStyle(potentialAttribute.getStyle()));
+                }
+            }
+
         }
     }
-
     @Inject(
             method = "getTooltip",
             at = @At(value = "RETURN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void test(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         if (isTiered && this.hasNbt() && this.getSubNbt(Tiered.NBT_SUBTAG_KEY) != null) { // only run on tiered items
             List<Text> list = cir.getReturnValue();
-            //for (Text text : list) {
-            //    System.out.println(text);
-            //}
-            //System.out.println("--------------");
             List<Text> badlyFormattedList = new ArrayList<>();
             List<MutableText> modifierList = new ArrayList<>();
             Set<String> set = new HashSet<>();
@@ -117,9 +116,7 @@ public abstract class ItemStackClientMixin {
                     badlyFormattedList.add(textComponent);
                 }
             }
-            //System.out.println("--------------"+badlyFormattedList.get(0));
             badlyFormattedList.remove(0); // preserve the name of the item
-
             for (Text badtext : badlyFormattedList) {
                 // reformat badly formatted tooltip lines into TranslatableTexts, as the first two lines
                 // of most held weapons are blank TextComponents with sibling TranslatableComponents
@@ -148,11 +145,6 @@ public abstract class ItemStackClientMixin {
                     }
                 }
             }
-            //for (Text text : list) {
-            //    System.out.println("AFTER: "+text);
-            //}
-            //System.out.println("AFTER--------------");
-            //System.out.println("AFTER3--------");
             if (modifierList.size() > 1) {
                 list.removeAll(modifierList);
                 Object[] args = new Object[modifierList.size()];
@@ -161,6 +153,7 @@ public abstract class ItemStackClientMixin {
                 }
                 list.add(1, Text.translatable("tooltip.tiered.modifier."+modifierList.size(), args).formatted(Formatting.GRAY));
             }
+
             for (Text text : list) {
                 if (text instanceof MutableText mutableText
                         && mutableText.getContent() instanceof TranslatableTextContent listText

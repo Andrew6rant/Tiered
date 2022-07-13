@@ -1,0 +1,23 @@
+{
+  "id": "okay:test",
+  "verifiers": [
+    { "tag": "c:helmets" },
+    { "tag": "c:chestplates" },
+    { "tag": "c:leggings" },
+    { "tag": "c:boots" },
+    { "tag": "c:shields" },
+    { "tag": "minecraft:planks" }
+  ],
+  "style": {
+    "color": "green"
+  },
+  "weight": 0,
+  "tooltip_image": [3],
+  "tooltip_border":  ["FF55FF55"],
+  "reforge_cost": 0,
+  "attributes": [
+    {
+      "type": "none"
+    }
+  ]
+}

@@ -48,13 +48,12 @@ public class Tiered implements ModInitializer {
     public static final AttributeDataLoader ATTRIBUTE_DATA_LOADER = new AttributeDataLoader();
 
     public static final UUID[] MODIFIERS = new UUID[] {
-
-            UUID.fromString("1234527C-C624-495F-8C9F-6020A9A58B6B"),
-            UUID.fromString("12345B04-0E66-4726-AB29-64469D734E0D"),
-            UUID.fromString("1234576D-C118-4544-8365-64846904B48E"),
-            UUID.fromString("12345246-FEE1-4E67-B886-69FD380BB150"),
-            UUID.fromString("12345c27-9563-4eeb-96d5-fe50917cc24f"),
-            UUID.fromString("12345d8c-1b51-4c46-9f4b-c58162623a7a")
+            UUID.fromString("145DB27C-C624-495F-8C9F-6020A9A58B6B"),
+            UUID.fromString("28499B04-0E66-4726-AB29-64469D734E0D"),
+            UUID.fromString("3F3D476D-C118-4544-8365-64846904B48E"),
+            UUID.fromString("4AD3F246-FEE1-4E67-B886-69FD380BB150"),
+            UUID.fromString("5a88bc27-9563-4eeb-96d5-fe50917cc24f"),
+            UUID.fromString("6ee48d8c-1b51-4c46-9f4b-c58162623a7a")
             //UUID.fromString("cb3f55d3-645c-4f38-a497-9c13a33db5cf")
     };
 
@@ -73,11 +72,9 @@ public class Tiered implements ModInitializer {
         registerAttributeSyncer();
         registerAttributeModifier();
 
-       /* if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            setupModifierLabel();
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+//            setupModifierLabel();
         }
-
-        */
 
         // Register the data pack contents listener
         var manager = ResourceManagerHelper.get(ResourceType.SERVER_DATA);
@@ -120,20 +117,20 @@ public class Tiered implements ModInitializer {
         });
     }
 
-    public static int getter(ItemStack stack, String key) {
+    public static int reforgeCostGetter(ItemStack stack) {
+        Identifier tier = new Identifier(stack.getOrCreateSubNbt(NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
+        PotentialAttribute potentialAttribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
+        if(potentialAttribute != null) {
+            return potentialAttribute.getReforge_cost();
+        }
+        return 0; // this should never be called
+    }
+    public static int[] levelGetter(ItemStack stack, String key) {
         // get tier
         Identifier tier = new Identifier(stack.getOrCreateSubNbt(NBT_SUBTAG_KEY).getString(Tiered.NBT_SUBTAG_DATA_KEY));
         // attempt to display attribute if it is valid
         PotentialAttribute potentialAttribute = Tiered.ATTRIBUTE_DATA_LOADER.getItemAttributes().get(tier);
-        if(potentialAttribute != null) {
-            switch (key) {
-                case "level": return potentialAttribute.getTooltip_image();
-                case "startColor": return potentialAttribute.getTooltip_border_start();
-                case "endColor": return potentialAttribute.getTooltip_border_end();
-                case "reforgeCost": return potentialAttribute.getReforge_cost();
-            }
-        }
-        return 0; // this should never be called
+        return potentialAttribute.getTooltip_image();
     }
 
     public static boolean isPreferredEquipmentSlot(ItemStack stack, EquipmentSlot slot) {
